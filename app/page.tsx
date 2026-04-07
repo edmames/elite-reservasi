@@ -3,12 +3,13 @@ import { createClient } from '@supabase/supabase-js';
 import { useState, useEffect } from 'react';
 
 // Konek ke Supabase pake kunci rahasia
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function Dashboard() {
-  const [kamar, setKamar] = useState([]);
+  // Tambahin <any[]> di sini biar TypeScript nggak rewel
+  const [kamar, setKamar] = useState<any[]>([]);
 
   useEffect(() => {
     ambilDataKamar();
