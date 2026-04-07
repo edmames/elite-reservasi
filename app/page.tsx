@@ -1,43 +1,61 @@
 "use client";
-import { createClient } from '@supabase/supabase-js';
-import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
-// Konek ke Supabase pake kunci rahasia
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-export default function Dashboard() {
-  // Tambahin <any[]> di sini biar TypeScript nggak rewel
-  const [kamar, setKamar] = useState<any[]>([]);
-
-  useEffect(() => {
-    ambilDataKamar();
-  }, []);
-
-  async function ambilDataKamar() {
-    const { data } = await supabase.from('kamar').select('*').order('no_kamar', { ascending: true });
-    if (data) setKamar(data);
-  }
-
+export default function LandingPage() {
   return (
-    <div className="p-8 bg-slate-50 min-h-screen font-sans text-slate-800">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-black mb-2 text-slate-900 tracking-tight">🏨 Elite Residence</h1>
-        <p className="text-slate-500 mb-8 font-medium">Dashboard Reservasi Stay Smart ID</p>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {kamar.map((item) => (
-            <div key={item.id} className={`p-6 rounded-3xl border shadow-sm transition hover:shadow-md ${item.status === 'Terisi' ? 'bg-rose-50 border-rose-200' : 'bg-emerald-50 border-emerald-200'}`}>
-              <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">{item.tipe}</div>
-              <div className="text-4xl font-black mb-4 text-slate-800">{item.no_kamar}</div>
-              <span className={`text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider ${item.status === 'Terisi' ? 'bg-rose-500 text-white' : 'bg-emerald-500 text-white'}`}>
-                {item.status}
-              </span>
-            </div>
-          ))}
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
+      {/* 1. Navbar Simpel */}
+      <nav className="flex justify-between items-center px-8 py-6 max-w-7xl mx-auto">
+        <div className="text-2xl font-black tracking-tighter italic">ELITE.</div>
+        <div className="flex gap-8 text-xs font-bold uppercase tracking-widest">
+          <Link href="/booking" className="hover:text-slate-500 transition">Book Now</Link>
+          <Link href="/login" className="px-5 py-2 bg-slate-900 text-white rounded-full hover:bg-slate-700 transition">Admin</Link>
         </div>
-      </div>
+      </nav>
+
+      {/* 2. Hero Section - Bold & Clean */}
+      <header className="max-w-7xl mx-auto px-8 py-20 flex flex-col items-center text-center">
+        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-4 bg-white px-4 py-2 rounded-full border border-slate-200">
+          Ciputat - South Tangerang
+        </span>
+        <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-none mb-8">
+          STAY SMART.<br/>SLEEP ELITE.
+        </h1>
+        <p className="max-w-md text-slate-500 font-medium leading-relaxed mb-10 text-lg">
+          Experience the ultimate transit comfort with our automated room system. 
+          Luxury made simple, just for you.
+        </p>
+        <Link href="/booking" className="group relative inline-flex items-center gap-3 px-10 py-5 bg-slate-900 text-white rounded-[32px] font-black text-lg overflow-hidden transition-all active:scale-95 shadow-2xl shadow-slate-300">
+          START BOOKING 🚀
+          <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform"></div>
+        </Link>
+      </header>
+
+      {/* 3. Features Section - Kotak-kotak Rapih */}
+      <section className="max-w-7xl mx-auto px-8 pb-32 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="p-10 bg-white rounded-[40px] border border-slate-200 shadow-sm">
+          <div className="text-4xl mb-4">⚡</div>
+          <h3 className="font-black text-xl mb-2">Instant Check-in</h3>
+          <p className="text-sm text-slate-500 font-medium leading-relaxed">Nggak perlu nunggu lama. Datang, konfirmasi, langsung masuk kamar.</p>
+        </div>
+
+        <div className="p-10 bg-slate-900 text-white rounded-[40px] shadow-2xl shadow-slate-400">
+          <div className="text-4xl mb-4">💎</div>
+          <h3 className="font-black text-xl mb-2 text-white">Elite Comfort</h3>
+          <p className="text-sm text-slate-300 font-medium leading-relaxed">Fasilitas bintang 5 dengan harga yang ramah di kantong buat transit lu.</p>
+        </div>
+
+        <div className="p-10 bg-white rounded-[40px] border border-slate-200 shadow-sm">
+          <div className="text-4xl mb-4">🔒</div>
+          <h3 className="font-black text-xl mb-2">Private & Secure</h3>
+          <p className="text-sm text-slate-500 font-medium leading-relaxed">Keamanan dan privasi tamu adalah prioritas nomor satu di Elite Residence.</p>
+        </div>
+      </section>
+
+      {/* 4. Footer */}
+      <footer className="text-center py-10 border-t border-slate-200 text-[10px] font-bold text-slate-400 tracking-widest uppercase">
+        © 2026 Elite Residence Ciputat — All Rights Reserved.
+      </footer>
     </div>
   );
 }
