@@ -25,17 +25,19 @@ export default function BookingPage() {
     cekKamarKosong();
   }, []);
 
-  async function kirimBooking(e: any) {
-    e.preventDefault();
-    const { error } = await supabase.from('reservasi').insert([form]);
-    
-    if (!error) {
-      alert("✅ Mantap! Reservasi berhasil dikirim. Stay Smart ID akan segera hubungi kamu!");
-      setForm({ nama: '', whatsapp: '', tipe_kamar: '', tanggal_kedatangan: '', jam_kedatangan: '' });
-    } else {
-      alert("❌ Gagal ngirim, coba cek lagi datanya ya.");
-    }
+ async function kirimBooking(e: any) {
+  e.preventDefault();
+  const { error } = await supabase.from('reservasi').insert([form]);
+  
+  if (!error) {
+    alert("✅ Berhasil!");
+    setForm({ nama: '', whatsapp: '', tipe_kamar: '', tanggal_kedatangan: '', jam_kedatangan: '' });
+  } else {
+    // INI YANG PENTING: Liat pesan error aslinya di layar HP/PC lu
+    alert("❌ Detail Error: " + error.message + " | Hint: " + error.hint);
+    console.error(error);
   }
+}
 
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-6 font-sans">
